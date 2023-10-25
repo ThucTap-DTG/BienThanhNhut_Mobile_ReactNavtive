@@ -27,6 +27,10 @@ function Home(){
       fetchData();
     },[])
 
+    useEffect(() => {
+      fetchData();
+    }, []);
+
     const fetchData = () => {
       axios
         .get<Student[]>(url)
@@ -37,7 +41,7 @@ function Home(){
           console.error("Load dữ lieu that bại", error);
         });
     }
-    //Hàm
+
     const addStudent = () =>{
       const newStudent: Student = {
         name: addName,
@@ -184,11 +188,13 @@ const styles = StyleSheet.create ({
     scroll1:{
     },
     view2:{
-        flex:1,
+        flex:2,
     },
     scroll2:{
     },
 
 });
+
+//xin chao
 
 export default Home;
