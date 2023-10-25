@@ -22,24 +22,32 @@ function Home(){
 
     const[dataSource, setDataSource] = useState<Student[]>([])
 
+    const [search, setSearch] = useState<string>(""); 
+
 
     useEffect(()=>{
-      fetchData();
-    },[])
+      fetchData(search);
+    },[search])
 
-    useEffect(() => {
-      fetchData();
-    }, []);
+    const fetchData = (text : string) => {
+      if(text !== "")
+      {
+        console.log("console_1");
+        const result = dataSource.filter((item) => item.name.toLowerCase().includes(text.toLowerCase()));
+        setDataSource(result)
+      }
+      else{
+        console.log("console_2");
+        axios
+          .get<Student[]>(url)
+          .then((response) => {
+            setDataSource(response.data);
+          })
+          .catch((error) => {
+            console.error("Load dữ lieu that bại", error);
+          });
 
-    const fetchData = () => {
-      axios
-        .get<Student[]>(url)
-        .then((response) => {
-          setDataSource(response.data);
-        })
-        .catch((error) => {
-          console.error("Load dữ lieu that bại", error);
-        });
+      }
     }
 
     const addStudent = () =>{
@@ -51,7 +59,7 @@ function Home(){
       axios
         .post(url, newStudent)
         .then(() => {
-          fetchData();
+          fetchData(search);
           setAddName("");
           setAddEmail("");
           Alert.alert(
@@ -69,7 +77,7 @@ function Home(){
       axios
         .delete(`${url}/${idDelete}`)
         .then(() => {
-          fetchData();
+          fetchData(search);
           setIdDelete("");
           Alert.alert(
             "Xóa thành công",
@@ -91,7 +99,7 @@ function Home(){
       axios
         .put(`${url}/${idEdit}`, updateStudent)
         .then(() => {
-          fetchData(); 
+          fetchData(search); 
           setEditId(""); 
           setEditName("");
           setEditEmail("");
@@ -113,7 +121,12 @@ function Home(){
       <View style={styles.container}>
         <View style={styles.view1}>
           <ScrollView style={styles.scroll1}>
-            <Text style={{fontSize:20, color:'green'}}>Danh sách</Text>
+            <TextInput
+              placeholder="Nhập tên tìm kiếm"
+              value={search}
+              onChangeText={(Text) => setSearch(Text)}
+            ></TextInput>
+            <Text style={{ fontSize: 20, color: "green" }}>Danh sách</Text>
             <FlatList
               data={dataSource}
               keyExtractor={(item) => item.id.toString()}
@@ -194,7 +207,5 @@ const styles = StyleSheet.create ({
     },
 
 });
-
-//xin chao
 
 export default Home;
