@@ -73,22 +73,21 @@ function Home(){
         });
     }
 
-    const deleteStudent = () =>{
+
+    const deleteStudent = (id:Number) => {
       axios
-        .delete(`${url}/${idDelete}`)
+        .delete(`${url}/${id}`)
         .then(() => {
           fetchData(search);
           setIdDelete("");
-          Alert.alert(
-            "Xóa thành công",
-            "Sinh viên đã được xóa"
-          );
+          Alert.alert("Xóa thành công", "Sinh viên đã được xóa");
         })
         .catch((error) => {
-          console.error("Thêm thất bại ", error);
+          console.error("Xóa thất bại ", error);
           Alert.alert("Lỗi", "Không thể xóa sinh viên. Vui lòng thử lại sau.");
         });
-    }
+    };
+
 
     const editStudent = () =>{
       const updateStudent : Student = {
@@ -134,11 +133,22 @@ function Home(){
                 <View
                   style={{
                     backgroundColor: index % 2 === 0 ? "lightgray" : "white",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: 10,
                   }}
                 >
-                  <Text>Id: {item.id}</Text>
-                  <Text>Name: {item.name}</Text>
-                  <Text>Email: {item.email}</Text>
+                  <View>
+                    <Text>Id: {item.id}</Text>
+                    <Text>Name: {item.name}</Text>
+                    <Text>Email: {item.email}</Text>
+                  </View>
+                  <Button
+                    title="Delete"
+                    onPress={() => deleteStudent(item.id)}
+                    color="red"
+                  />
                 </View>
               )}
             />
@@ -158,15 +168,6 @@ function Home(){
               onChangeText={(text) => setAddEmail(text)}
             ></TextInput>
             <Button title="Thêm" onPress={addStudent} />
-
-            <Text style={{ fontSize: 20, color: "green" }}>Xóa sinh viên</Text>
-            <TextInput
-              placeholder="Nhập ID"
-              value={idDelete}
-              onChangeText={(text) => setIdDelete(text)}
-            ></TextInput>
-            <Button title="Xóa" onPress={deleteStudent} />
-
             <Text style={{ fontSize: 20, color: "green" }}>Sửa sinh viên</Text>
             <TextInput
               placeholder="Nhập ID"
