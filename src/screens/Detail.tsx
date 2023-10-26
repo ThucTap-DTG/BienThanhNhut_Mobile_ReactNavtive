@@ -140,57 +140,54 @@ function Home() {
             onChangeText={(text) => setSearch(text)}
           ></TextInput>
           <Text style={{ fontSize: 20, color: "green" }}>Danh sách</Text>
-          <FlatList
-            data={dataSource}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item, index }) => (
-              <View
-                style={{
-                  backgroundColor: index % 2 === 0 ? "lightgray" : "white",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: 10,
-                }}
-              >
-                <View>
-                  <Text>Id: {item.id}</Text>
-                  {editingStudent === item ? (
-                    <>
-                      <TextInput
-                        value={editName}
-                        onChangeText={(text) => setEditName(text)}
-                      />
-                      <TextInput
-                        value={editEmail}
-                        onChangeText={(text) => setEditEmail(text)}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Text>Name: {item.name}</Text>
-                      <Text>Email: {item.email}</Text>
-                    </>
-                  )}
-                </View>
+          {dataSource.map((item, index) => (
+            <View
+            key={index}
+              style={{
+                backgroundColor: index % 2 === 0 ? "lightgray" : "white",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: 10,
+              }}
+            >
+              <View>
+                <Text>Id: {item.id}</Text>
                 {editingStudent === item ? (
                   <>
-                    <Button title="Save" onPress={saveStudent} />
-                    <Button title="Cancel" onPress={cancelEditing} />
+                    <TextInput
+                      value={editName}
+                      onChangeText={(text) => setEditName(text)}
+                    />
+                    <TextInput
+                      value={editEmail}
+                      onChangeText={(text) => setEditEmail(text)}
+                    />
                   </>
                 ) : (
                   <>
-                    <Button title="Edit" onPress={() => startEditing(item)} />
-                    <Button
-                      title="Delete"
-                      onPress={() => deleteStudent(item.id)}
-                      color="red"
-                    />
+                    <Text>Name: {item.name}</Text>
+                    <Text>Email: {item.email}</Text>
                   </>
                 )}
               </View>
-            )}
-          />
+              {editingStudent === item ? (
+                <>
+                  <Button title="Save" onPress={saveStudent} />
+                  <Button title="Cancel" onPress={cancelEditing} />
+                </>
+              ) : (
+                <>
+                  <Button title="Edit" onPress={() => startEditing(item)} />
+                  <Button
+                    title="Delete"
+                    onPress={() => deleteStudent(item.id)}
+                    color="red"
+                  />
+                </>
+              )}
+            </View>
+          ))}
         </ScrollView>
       </View>
       <View style={styles.view2}>
@@ -206,7 +203,7 @@ function Home() {
             value={addEmail}
             onChangeText={(text) => setAddEmail(text)}
           ></TextInput>
-          <Button title="Thêm" onPress={addStudent} />
+          <Button title="Add" onPress={addStudent} />
         </ScrollView>
       </View>
     </View>
