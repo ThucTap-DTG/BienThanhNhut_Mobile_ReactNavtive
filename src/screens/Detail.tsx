@@ -10,6 +10,9 @@ import {
   FlatList,
   Alert,
 } from "react-native";
+import item from './item';
+import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
+import Item_1 from "./item";
 
 interface Student {
   id: number;
@@ -141,52 +144,7 @@ function Home() {
           ></TextInput>
           <Text style={{ fontSize: 20, color: "green" }}>Danh sách</Text>
           {dataSource.map((item, index) => (
-            <View
-            key={index}
-              style={{
-                backgroundColor: index % 2 === 0 ? "lightgray" : "white",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: 10,
-              }}
-            >
-              <View>
-                <Text>Id: {item.id}</Text>
-                {editingStudent === item ? (
-                  <>
-                    <TextInput
-                      value={editName}
-                      onChangeText={(text) => setEditName(text)}
-                    />
-                    <TextInput
-                      value={editEmail}
-                      onChangeText={(text) => setEditEmail(text)}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Text>Name: {item.name}</Text>
-                    <Text>Email: {item.email}</Text>
-                  </>
-                )}
-              </View>
-              {editingStudent === item ? (
-                <>
-                  <Button title="Save" onPress={saveStudent} />
-                  <Button title="Cancel" onPress={cancelEditing} />
-                </>
-              ) : (
-                <>
-                  <Button title="Edit" onPress={() => startEditing(item)} />
-                  <Button
-                    title="Delete"
-                    onPress={() => deleteStudent(item.id)}
-                    color="red"
-                  />
-                </>
-              )}
-            </View>
+            <Item_1 student = {item} key = {index}> </Item_1>
           ))}
         </ScrollView>
       </View>
