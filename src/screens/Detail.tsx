@@ -10,8 +10,6 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import item from './item';
-import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
 import Item_1 from "./item";
 
 interface Student {
@@ -93,26 +91,12 @@ function Home() {
   };
 
   const startEditing = (student: Student) => {
-    setEditingStudent(student);
-    setEditName(student.name);
-    setEditEmail(student.email);
+    saveStudent(student);
   };
 
-  const cancelEditing = () => {
-    setEditingStudent(null);
-    setEditName("");
-    setEditEmail("");
-  };
-
-  const saveStudent = () => {
-    if (editingStudent) {
-      const updatedStudent: Student = {
-        id: editingStudent.id,
-        name: editName,
-        email: editEmail,
-      };
-      axios
-        .put(`${url}/${editingStudent.id}`, updatedStudent)
+  const saveStudent = (sv: Student) => {
+    axios
+        .put(`${url}/${sv.id}`, sv)
         .then(() => {
           fetchData(search);
           setEditingStudent(null);
@@ -130,7 +114,6 @@ function Home() {
             "Không thể cập nhật thông tin. Vui lòng thử lại sau."
           );
         });
-    }
   };
 
   return (
@@ -144,7 +127,12 @@ function Home() {
           ></TextInput>
           <Text style={{ fontSize: 20, color: "green" }}>Danh sách</Text>
           {dataSource.map((item, index) => (
-            <Item_1 student = {item} key = {index}> </Item_1>
+            <Item_1
+              student={item}
+              onEdit={startEditing}
+              onDelete={deleteStudent}
+              index={index}
+            ></Item_1>
           ))}
         </ScrollView>
       </View>
