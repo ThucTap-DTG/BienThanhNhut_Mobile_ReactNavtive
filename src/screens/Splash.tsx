@@ -13,7 +13,7 @@ const Splash = ({ navigation }: any) => {
     try {
       const status = await AsyncStorage.getItem("username");
       if (status) {
-        navigation.navigate("Home");
+        navigation.navigate("Detail");
       }
       else
       {

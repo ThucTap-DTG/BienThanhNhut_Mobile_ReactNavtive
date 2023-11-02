@@ -7,7 +7,6 @@ import {
   Text,
   TextInput,
   Button,
-  FlatList,
   Alert,
 } from "react-native";
 import Item_1 from "./item";
@@ -20,7 +19,7 @@ interface Student {
 
 const url = "https://65376c31bb226bb85dd33468.mockapi.io/api/students";
 
-function Home() {
+function Home({navigation} : any) {
   const [addName, setAddName] = useState<string>("");
   const [addEmail, setAddEmail] = useState<string>("");
 
@@ -33,6 +32,13 @@ function Home() {
   const [dataSource, setDataSource] = useState<Student[]>([]);
 
   const [search, setSearch] = useState<string>("");
+
+  // handle chuyển trang
+  const handle_navigate = () => {
+    navigation.navigate("Detail_Account");
+  }
+
+
 
   useEffect(() => {
     fetchData(search);
@@ -150,6 +156,8 @@ function Home() {
             onChangeText={(text) => setAddEmail(text)}
           ></TextInput>
           <Button title="Add" onPress={addStudent} />
+          <Text>Chuyển trang</Text>
+          <Button title="Chuyển trang" onPress={handle_navigate}></Button>
         </ScrollView>
       </View>
     </View>
