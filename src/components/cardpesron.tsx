@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-const Home = () => {
+const YourApp = () => {
   return (
     <View
       style={{
@@ -10,9 +10,9 @@ const Home = () => {
         alignItems: "center",
       }}
     >
-      <Text style={{ fontSize: 30 }}>Home🎉</Text>
+      <Text style={{fontSize: 30}} >Home🎉</Text>
     </View>
   );
 };
 
-export default Home;
+export default YourApp;
