@@ -22,7 +22,7 @@ function TabNavigator() {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={Login}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: () => <AntDesign name="home" size={24} color="black" />,

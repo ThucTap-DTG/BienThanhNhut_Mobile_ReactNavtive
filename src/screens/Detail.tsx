@@ -131,7 +131,6 @@ function Home({navigation} : any) {
             value={search}
             onChangeText={(text) => setSearch(text)}
           ></TextInput>
-          <Text style={{ fontSize: 20, color: "green" }}>Danh sách</Text>
           {dataSource.map((item, index) => (
             <Item_1 
               student={item}
