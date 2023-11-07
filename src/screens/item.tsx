@@ -42,7 +42,7 @@ const Item_1: React.FC<StudentItemProps> = ({
         ]}
       >
         <Image
-          source={require("../assets/avatar_person.jpg")} // Đặt đường dẫn hình ảnh cố định tại đây
+          source={require("../assets/avatar_person.jpg")}
           style={styles.image}
         />
         <View style={styles.infoContainer}>

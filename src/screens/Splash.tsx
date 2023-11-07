@@ -17,7 +17,7 @@ const Splash = ({ navigation }: any) => {
       }
       else
       {
-        navigation.navigate("Login");
+        navigation.navigate("Login  ");
       }
     } catch (error) {
       console.error("Lỗi: ", error);
@@ -26,7 +26,7 @@ const Splash = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../image/logo.png")} />
+      <Image source={require("../image/logo.png")}/>
     </View>
   );
 };

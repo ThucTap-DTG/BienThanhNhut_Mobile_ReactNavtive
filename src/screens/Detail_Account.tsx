@@ -50,8 +50,7 @@ function Detail_Acount() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Thông tin tài khoản</Text>
       <Image
-        source={require("../assets/avatar_person.jpg")} // Đường dẫn đến hình ảnh tài khoản
-        style={styles.profileImage}
+        source={require("../assets/avatar_person.jpg")} 
       />
       <View style={styles.infoContainer}>
         <Text style={styles.infoLabel}>Tên tài khoản</Text>
