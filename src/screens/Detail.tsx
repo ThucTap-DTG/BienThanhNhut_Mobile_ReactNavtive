@@ -133,7 +133,7 @@ function Home({navigation} : any) {
           ></TextInput>
           <Text style={{ fontSize: 20, color: "green" }}>Danh sách</Text>
           {dataSource.map((item, index) => (
-            <Item_1
+            <Item_1 
               student={item}
               onEdit={startEditing}
               onDelete={deleteStudent}
