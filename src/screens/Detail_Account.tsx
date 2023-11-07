@@ -1,101 +1,127 @@
-import React, {useContext, useState}from "react";
-import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
+import React, { useContext, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  Image,
+  Alert,
+  ScrollView,
+} from "react-native";
 import { userContext } from "../context/Usercontext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 function Detail_Acount() {
-    const item = useContext(userContext)
-    const [username, setusername] = useState<string | undefined>(item?.user?.username);
-    const [password, setpassword] = useState<string | undefined>(item?.user?.password);
-    const [address, setaddress] = useState<string | undefined>(item?.user?.diachi);
-    const [gender, setgender] = useState<string | undefined>(item?.user?.gioitinh);
+  const item = useContext(userContext);
+  const [username, setusername] = useState<string | undefined>(
+    item?.user?.username
+  );
+  const [password, setpassword] = useState<string | undefined>(
+    item?.user?.password
+  );
+  const [address, setaddress] = useState<string | undefined>(
+    item?.user?.diachi
+  );
+  const [gender, setgender] = useState<string | undefined>(
+    item?.user?.gioitinh
+  );
 
-    console.log("Kết quả là");
-    console.log(username)
-    console.log(password)
-    console.log(address)
-    console.log(gender)
-
-    const handleEdit = async () => {
-      const user = {
-        username: username || "",
-        password: password || "",
-        diachi: address || "",
-        gioitinh: gender || "",
-      };
-      try {
-        await AsyncStorage.setItem("username", user.username);
-        await AsyncStorage.setItem("password", user.password);
-        await AsyncStorage.setItem("diachi", user.diachi);
-        await AsyncStorage.setItem("gioitinh", user.gioitinh);
-        item?.setUser(user);
-      } catch (error) {
-        console.error("Lỗi: ", error);
-      }
-      alert("Cập nhật thành công")
+  const handleEdit = async () => {
+    const user = {
+      username: username || "",
+      password: password || "",
+      diachi: address || "",
+      gioitinh: gender || "",
+    };
+    try {
+      await AsyncStorage.setItem("username", user.username);
+      await AsyncStorage.setItem("password", user.password);
+      await AsyncStorage.setItem("diachi", user.diachi);
+      await AsyncStorage.setItem("gioitinh", user.gioitinh);
+      item?.setUser(user);
+    } catch (error) {
+      console.error("Lỗi: ", error);
     }
-
+    Alert.alert("Cập nhật thành công", "", [{ text: "OK" }]);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 20 }}>Thông tin tài khoản</Text>
-      <View>
-        <Text style={styles.title}>Tên tài khoản</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Thông tin tài khoản</Text>
+      <Image
+        source={require("../assets/avatar_person.jpg")} // Đường dẫn đến hình ảnh tài khoản
+        style={styles.profileImage}
+      />
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Tên tài khoản</Text>
         <TextInput
           onChangeText={(text) => setusername(text)}
-          style={styles.content}
-        >
-          {item?.user?.username}
-        </TextInput>
+          style={styles.infoInput}
+          value={username}
+        />
       </View>
-      <View>
-        <Text style={styles.title}>Mật khẩu</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Mật khẩu</Text>
         <TextInput
           onChangeText={(text) => setpassword(text)}
-          style={styles.content}
-        >
-          {item?.user?.password}
-        </TextInput>
+          style={styles.infoInput}
+          value={password}
+        />
       </View>
-      <View>
-        <Text style={styles.title}>Địa chỉ</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Địa chỉ</Text>
         <TextInput
           onChangeText={(text) => setaddress(text)}
-          style={styles.content}
-        >
-          {item?.user?.diachi}
-        </TextInput>
+          style={styles.infoInput}
+          value={address}
+        />
       </View>
-      <View>
-        <Text style={styles.title}>Giới Tính</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoLabel}>Giới Tính</Text>
         <TextInput
           onChangeText={(text) => setgender(text)}
-          style={styles.content}
-        >
-          {item?.user?.gioitinh}
-        </TextInput>
+          style={styles.infoInput}
+          value={gender}
+        />
       </View>
-      <Button title="Cập nhật" onPress={handleEdit}></Button>
-    </View>
+      <Button title="Cập nhật" onPress={handleEdit} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center"
+    alignItems: "center",
+    padding: 16,
   },
-  
   title: {
-    fontSize: 16,
-    color: "green",
-    textAlign: "center"
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
-
-  content: {
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginBottom: 20,
+  },
+  infoContainer: {
+    width: "100%",
+    marginBottom: 20,
+  },
+  infoLabel: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: "green",
+  },
+  infoInput: {
+    fontSize: 16,
     padding: 10,
-    textAlign: "center"
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
   },
 });
+
 export default Detail_Acount;
