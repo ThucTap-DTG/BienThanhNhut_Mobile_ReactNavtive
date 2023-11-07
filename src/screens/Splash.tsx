@@ -17,7 +17,7 @@ const Splash = ({ navigation }: any) => {
       }
       else
       {
-        navigation.navigate("Login  ");
+        navigation.navigate("Login");
       }
     } catch (error) {
       console.error("Lỗi: ", error);
