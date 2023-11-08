@@ -12,7 +12,7 @@ import {
 import { userContext } from "../context/Usercontext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function Detail_Acount({ navigation }: any) {
+function Edit_Account() {
   const item = useContext(userContext);
   const [username, setusername] = useState<string | undefined>(
     item?.user?.username
@@ -26,9 +26,39 @@ function Detail_Acount({ navigation }: any) {
   const [gender, setgender] = useState<string | undefined>(
     item?.user?.gioitinh
   );
+//
 
-  const goToEdit = async () => {
-    navigation.navigate("Edit");
+const [repassword, setrepassword] = useState<string | undefined>(
+  item?.user?.password
+);
+
+  
+
+  const handleEdit = async () => {
+    const user = {
+      username: username || "",
+      password: password || "",
+      diachi: address || "",
+      gioitinh: gender || "",
+    };
+    if(password === repassword)
+    {
+      try {
+        await AsyncStorage.setItem("username", user.username);
+        await AsyncStorage.setItem("password", user.password);
+        await AsyncStorage.setItem("diachi", user.diachi);
+        await AsyncStorage.setItem("gioitinh", user.gioitinh);
+        item?.setUser(user);
+      } catch (error) {
+        console.error("Lỗi: ", error);
+      }
+      Alert.alert("Cập nhật thành công", "", [{ text: "OK" }]);
+    }
+    else
+    {
+      Alert.alert("Không hợp lệ vui lòng nhập lại", "", [{ text: "OK" }]);
+    }
+    
   };
 
   return (
@@ -40,41 +70,27 @@ function Detail_Acount({ navigation }: any) {
       />
       <View style={styles.infoContainer}>
         <Text style={styles.infoLabel}>Tên tài khoản</Text>
-        {/* <TextInput
-          onChangeText={(text) => setusername(text)}
-          style={styles.infoInput}
-          value={username}
-        /> */}
         <Text>{username}</Text>
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.infoLabel}>Mật khẩu</Text>
-        {/* <TextInput
+        <TextInput
           onChangeText={(text) => setpassword(text)}
           style={styles.infoInput}
           value={password}
-        /> */}
-        <Text>{password}</Text>
+          secureTextEntry={true}
+        />
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.infoLabel}>Địa chỉ</Text>
-        {/* <TextInput
-          onChangeText={(text) => setaddress(text)}
+        <Text style={styles.infoLabel}>Nhập lại mật khẩu</Text>
+        <TextInput
+          onChangeText={(text) => setrepassword(text)}
           style={styles.infoInput}
-          value={address}
-        /> */}
-        <Text>{address}</Text>
+          value={repassword}
+          secureTextEntry={true}
+        />
       </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoLabel}>Giới Tính</Text>
-        {/* <TextInput
-          onChangeText={(text) => setgender(text)}
-          style={styles.infoInput}
-          value={gender}
-        /> */}
-        <Text>{gender}</Text>
-      </View>
-      <Button title="Thay đổi mật khẩu" onPress={goToEdit} />
+      <Button title="Cập nhật" onPress={handleEdit} />
     </ScrollView>
   );
 }
@@ -113,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Detail_Acount;
+export default Edit_Account;

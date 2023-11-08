@@ -27,7 +27,7 @@ const Login = ({ navigation }: any) => {
       } catch (error) {
         console.error("Lỗi: ", error);
       }
-      navigation.navigate("Detail");
+      navigation.navigate("Drawer");
       alert("Đăng nhập thành công");
     } else {
       alert("Đăng nhập không thành công. Vui lòng thử lại.");

@@ -1,119 +1,164 @@
-import "react-native-gesture-handler";
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import Home from "./src/screens/Home";
-import Login from "./src/screens/Login";
-import Splash from "./src/screens/Splash";
-import Detail from "./src/screens/Detail";
-import DetailAccount from "./src/screens/Detail_Account";
-import { UserProvider } from "./src/context/Usercontext";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
-  createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList,
   DrawerItem,
+  DrawerItemList,
+  createDrawerNavigator,
 } from "@react-navigation/drawer";
-import { Alert } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home from "./src/screens/Home";
+import Detail from "./src/screens/Detail";
+import Detail_Account from "./src/screens/Detail_Account";
+import Splash from "./src/screens/Splash";
+import Login from "./src/screens/Login";
+import Edit from "./src/screens/Edit_Account";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserProvider } from "./src/context/Usercontext";
+import { Alert } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
-function CustomDrawerContent(props : any) {
-  const { navigation } = props;
-
-  const logout = () => {
-    Alert.alert("Thông báo logout", "Bạn có chắc chắn muốn thoát ?", [
-      {
-        text: "No",
-        style: "cancel",
-      },
-      {
-        text: "Yes",
-        onPress: async () => {
-          await AsyncStorage.clear();
-          navigation.navigate("Login");
-        },
-      },
-    ]);
-  };
-
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem label="Logout" onPress={logout} />
-    </DrawerContentScrollView>
-  );
-}
-
+const Tab = createBottomTabNavigator();
+//
 function TabNavigator() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="Detail"
+      screenOptions={{ headerShown: false }}
+    >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: "Home",
-          tabBarIcon: () => <AntDesign name="home" size={24} color="black" />,
+          tabBarLabel: "Trang chủ",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Detail"
         component={Detail}
         options={{
-          tabBarLabel: "Detail",
-          tabBarIcon: () => (
-            <MaterialCommunityIcons
-              name="account-details"
-              size={32}
-              color="black"
-            />
+          tabBarLabel: "Trang chủ",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="DetailAccount"
-        component={DetailAccount}
+        name="Detail_Account"
+        component={Detail_Account}
         options={{
-          tabBarLabel: "DetailAccount",
-          tabBarIcon: () => (
-            <MaterialCommunityIcons
-              name="card-account-details-outline"
-              size={24}
-              color="black"
-            />
+          tabBarLabel: "Trang chủ",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" size={size} color={color} />
           ),
         }}
       />
     </Tab.Navigator>
   );
 }
+//
+function TabNavigator2() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Detail_Account"
+      screenOptions={{ headerShown: false }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarLabel: "Trang chủ",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Detail"
+        component={Detail}
+        options={{
+          tabBarLabel: "Trang chủ",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Detail_Account"
+        component={Detail_Account}
+        options={{
+          tabBarLabel: "Trang chủ",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="person" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+//
+function DrawerNavigator(props: any) {
+  const { navigation } = props;
+  const handleLogout = async () => {
+  Alert.alert("Thông báo logout", "Bạn có chắc chắn muốn thoát ?", [
+    {
+      text: "No",
+      style: "cancel",
+    },
+    {
+      text: "Yes",
+      onPress: async () => {
+        await AsyncStorage.clear();
+        navigation.navigate("Splash");
+      },
+    },
+  ]);
+  };
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => (
+        <DrawerContentScrollView {...props}>
+          <DrawerItemList {...props} />
+          <DrawerItem label="Đăng xuất" onPress={handleLogout} />
+        </DrawerContentScrollView>
+      )}
+    >
+      <Drawer.Screen
+        name="DrawerScreen"
+        component={TabNavigator}
+        options={{ title: "Chi tiết" }}
+      />
+      <Drawer.Screen
+        name="DrawerScreen2"
+        component={TabNavigator2}
+        options={{ title: "Thông tin tài khoản" }}
+      />
+    </Drawer.Navigator>
+  );
+}
 
-const App = () => {
+function App() {
   return (
     <UserProvider>
       <NavigationContainer>
-        <Drawer.Navigator
+        <Stack.Navigator
           initialRouteName="Splash"
           screenOptions={{ headerShown: false }}
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
         >
-          <Drawer.Screen
-            name="Splash"
-            component={Splash}
-            options={{ headerShown: false }}
-          />
-          <Drawer.Screen name="Login" component={Login} />
-          <Drawer.Screen name="Detail" component={TabNavigator} />
-          <Drawer.Screen name="DetailAccount" component={DetailAccount} />
-        </Drawer.Navigator>
+          <Stack.Screen name="Splash" component={Splash} />
+          <Stack.Screen name="Drawer" component={DrawerNavigator} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Edit" component={Edit} options={{headerShown: true}}/>
+        </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
   );
-};
+}
 
 export default App;

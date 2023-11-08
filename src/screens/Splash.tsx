@@ -1,23 +1,30 @@
 import React, { useEffect } from "react";
 import { Image, View, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Splash = ({ navigation }: any) => {
-    useEffect(() => {
-    setTimeout(() => {
+  //   useEffect(() => {
+  //     console.log('xyz')
+  //     checkLogin();
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
       checkLogin();
-    }, 1000);
-  }, []);
+    }, [])
+  )
 
   const checkLogin = async () => {
     try {
+      console.log("abc")
       const status = await AsyncStorage.getItem("username");
       if (status) {
-        navigation.navigate("Detail");
+        navigation.navigate("Drawer");
       }
       else
       {
-        navigation.navigate("Login  ");
+        navigation.navigate("Login");
       }
     } catch (error) {
       console.error("Lỗi: ", error);
