@@ -2,36 +2,42 @@ import React, { useState } from "react";
 import { View, StyleSheet, Button, Text, TextInput, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-interface Student {
+interface Subject {
   id: number;
   name: string;
-  email: string;
+  startDate: string;
+  endDate: string;
+  quantity: string;
 }
 
-interface StudentItemProps {
+interface SubjectItemProps {
   index: number;
-  student: Student;
-  onEdit: (student: Student) => void;
+  subject: Subject;
+  onEdit: (subject: Subject) => void;
   onDelete: (id: number) => void;
 }
 
-const Item_1: React.FC<StudentItemProps> = ({
+const SubjectItem: React.FC<SubjectItemProps> = ({
   index,
-  student,
+  subject,
   onEdit,
   onDelete,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(student.name);
-  const [editEmail, setEditEmail] = useState(student.email);
+  const [editName, setEditName] = useState(subject.name);
+  const [editStartDate, setEditStartDate] = useState(subject.startDate);
+  const [editEndDate, setEditEndDate] = useState(subject.endDate);
+  const [editQuantity, setEditQuantity] = useState(subject.quantity);
 
   const handleEdit = () => {
-    const updatedStudent: Student = {
-      id: student.id,
+    const updatedSubject: Subject = {
+      id: subject.id,
       name: editName,
-      email: editEmail,
+      startDate: editStartDate,
+      endDate: editEndDate,
+      quantity: editQuantity,
     };
-    onEdit(updatedStudent);
+    onEdit(updatedSubject);
     setIsEditing(false);
   };
 
@@ -47,12 +53,13 @@ const Item_1: React.FC<StudentItemProps> = ({
           { backgroundColor: index % 2 === 0 ? "lightgray" : "green" },
         ]}
       >
+        {/* Adjust the image source or remove it based on your design */}
         <Image
           source={require("../assets/avatar_person.jpg")}
           style={styles.image}
         />
         <View style={styles.infoContainer}>
-          <Text style={styles.text}>Id: {student.id}</Text>
+          <Text style={styles.text}>Id: {subject.id}</Text>
           {isEditing ? (
             <>
               <TextInput
@@ -61,15 +68,27 @@ const Item_1: React.FC<StudentItemProps> = ({
                 style={styles.input}
               />
               <TextInput
-                value={editEmail}
-                onChangeText={(text) => setEditEmail(text)}
+                value={editStartDate}
+                onChangeText={(text) => setEditStartDate(text)}
+                style={styles.input}
+              />
+              <TextInput
+                value={editEndDate}
+                onChangeText={(text) => setEditEndDate(text)}
+                style={styles.input}
+              />
+              <TextInput
+                value={editQuantity}
+                onChangeText={(text) => setEditQuantity(text)}
                 style={styles.input}
               />
             </>
           ) : (
             <>
               <Text>{editName}</Text>
-              <Text>{editEmail}</Text>
+              <Text>{`Start Date: ${editStartDate}`}</Text>
+              <Text>{`End Date: ${editEndDate}`}</Text>
+              <Text>{`Quantity: ${editQuantity}`}</Text>
             </>
           )}
         </View>
@@ -82,7 +101,7 @@ const Item_1: React.FC<StudentItemProps> = ({
           <Button
             title="Delete"
             color="red"
-            onPress={() => onDelete(student.id)}
+            onPress={() => onDelete(subject.id)}
           />
         </View>
       </View>
@@ -122,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Item_1;
+export default SubjectItem;
