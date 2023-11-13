@@ -21,6 +21,7 @@ const Item_1: React.FC<StudentItemProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(student.name);
   const [editEmail, setEditEmail] = useState(student.email);
 
@@ -31,6 +32,11 @@ const Item_1: React.FC<StudentItemProps> = ({
       email: editEmail,
     };
     onEdit(updatedStudent);
+    setIsEditing(false); // Disable editing after saving changes
+  };
+
+  const handleEditPress = () => {
+    setIsEditing(true);
   };
 
   return (
@@ -47,19 +53,32 @@ const Item_1: React.FC<StudentItemProps> = ({
         />
         <View style={styles.infoContainer}>
           <Text style={styles.text}>Id: {student.id}</Text>
-          <TextInput
-            value={editName}
-            onChangeText={(text) => setEditName(text)}
-            style={styles.input}
-          />
-          <TextInput
-            value={editEmail}
-            onChangeText={(text) => setEditEmail(text)}
-            style={styles.input}
-          />
+          {isEditing ? (
+            <>
+              <TextInput
+                value={editName}
+                onChangeText={(text) => setEditName(text)}
+                style={styles.input}
+              />
+              <TextInput
+                value={editEmail}
+                onChangeText={(text) => setEditEmail(text)}
+                style={styles.input}
+              />
+            </>
+          ) : (
+            <>
+              <Text>{editName}</Text>
+              <Text>{editEmail}</Text>
+            </>
+          )}
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Edit" color="blue" onPress={handleEdit} />
+          {isEditing ? (
+            <Button title="Save" color="green" onPress={handleEdit} />
+          ) : (
+            <Button title="Edit" color="blue" onPress={handleEditPress} />
+          )}
           <Button
             title="Delete"
             color="red"

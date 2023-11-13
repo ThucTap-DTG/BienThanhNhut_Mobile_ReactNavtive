@@ -37,9 +37,6 @@ function Home({navigation} : any) {
   const handle_navigate = () => {
     navigation.navigate("Detail_Account");
   }
-
-
-
   useEffect(() => {
     fetchData(search);
   }, [search]);
@@ -137,6 +134,7 @@ function Home({navigation} : any) {
               onEdit={startEditing}
               onDelete={deleteStudent}
               index={index}
+              key={index}
             ></Item_1>
           ))}
         </ScrollView>
