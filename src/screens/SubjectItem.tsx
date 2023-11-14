@@ -27,6 +27,13 @@
     const [editStartDate, setEditStartDate] = useState(subject.startDate);
     const [editEndDate, setEditEndDate] = useState(subject.endDate);
     const [editQuantity, setEditQuantity] = useState(subject.quantity);
+    const [initialValues, setInitialValues] = useState<Subject>({
+      id: subject.id,
+      name: subject.name,
+      startDate: subject.startDate,
+      endDate: subject.endDate,
+      quantity: subject.quantity,
+    });
 
     const handleEdit = () => {
       const updatedSubject: Subject = {
@@ -42,6 +49,14 @@
 
     const handleEditPress = () => {
       setIsEditing(true);
+    };
+
+    const handleCancel = () => {
+      setEditName(initialValues.name);
+      setEditStartDate(initialValues.startDate);
+      setEditEndDate(initialValues.endDate);
+      setEditQuantity(initialValues.quantity);
+      setIsEditing(false);
     };
 
     return (
@@ -92,15 +107,20 @@
           </View>
           <View style={styles.buttonContainer}>
             {isEditing ? (
-              <Button title="Save" color="green" onPress={handleEdit} />
+              <>
+                <Button title="Save" color="green" onPress={handleEdit} />
+                <Button title="Cancel" color="red" onPress={handleCancel} />
+              </>
             ) : (
-              <Button title="Edit" color="blue" onPress={handleEditPress} />
+              <>
+                <Button title="Edit" color="blue" onPress={handleEditPress} />
+                <Button
+                  title="Delete"
+                  color="red"
+                  onPress={() => onDelete(subject.id)}
+                />
+              </>
             )}
-            <Button
-              title="Delete"
-              color="red"
-              onPress={() => onDelete(subject.id)}
-            />
           </View>
         </View>
       </View>
