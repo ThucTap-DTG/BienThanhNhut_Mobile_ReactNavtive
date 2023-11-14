@@ -35,6 +35,12 @@ const Item_1: React.FC<StudentItemProps> = ({
     setIsEditing(false);
   };
 
+  const handleCancel = () => {
+    setEditName(student.name);
+    setEditEmail(student.email);
+    setIsEditing(false);
+  };
+
   const handleEditPress = () => {
     setIsEditing(true);
   };
@@ -75,15 +81,20 @@ const Item_1: React.FC<StudentItemProps> = ({
         </View>
         <View style={styles.buttonContainer}>
           {isEditing ? (
-            <Button title="Save" color="green" onPress={handleEdit} />
+            <>
+              <Button title="Save" color="green" onPress={handleEdit} />
+              <Button title="Cancel" color="red" onPress={handleCancel} />
+            </>
           ) : (
-            <Button title="Edit" color="blue" onPress={handleEditPress} />
+            <>
+              <Button title="Edit" color="blue" onPress={handleEditPress} />
+              <Button
+                title="Delete"
+                color="red"
+                onPress={() => onDelete(student.id)}
+              />
+            </>
           )}
-          <Button
-            title="Delete"
-            color="red"
-            onPress={() => onDelete(student.id)}
-          />
         </View>
       </View>
     </View>
