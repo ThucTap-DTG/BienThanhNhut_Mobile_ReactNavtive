@@ -19,44 +19,28 @@ interface Student {
 
 const url = "https://65376c31bb226bb85dd33468.mockapi.io/api/students";
 
-function Home({navigation} : any) {
+function Home({ navigation }: any) {
   const [addName, setAddName] = useState<string>("");
   const [addEmail, setAddEmail] = useState<string>("");
 
-  const [idDelete, setIdDelete] = useState<string>("");
-
-  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
-  const [editName, setEditName] = useState<string>("");
-  const [editEmail, setEditEmail] = useState<string>("");
-
   const [dataSource, setDataSource] = useState<Student[]>([]);
-
   const [search, setSearch] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
 
-  // handle chuyển trang
-  const handle_navigate = () => {
-    navigation.navigate("Detail_Account");
-  }
   useEffect(() => {
     fetchData(search);
-  }, [search]);
+  }, [search, currentPage, itemsPerPage]);
 
   const fetchData = (text: string) => {
-    if (text !== "") {
-      const result = dataSource.filter((item) =>
-        item.name.toLowerCase().includes(text.toLowerCase())
-      );
-      setDataSource(result);
-    } else {
-      axios
-        .get<Student[]>(url)
-        .then((response) => {
-          setDataSource(response.data);
-        })
-        .catch((error) => {
-          console.error("Load dữ lieu that bại", error);
-        });
-    }
+    axios
+      .get<Student[]>(url)
+      .then((response) => {
+        setDataSource(response.data);
+      })
+      .catch((error) => {
+        console.error("Load dữ liệu thất bại", error);
+      });
   };
 
   const addStudent = () => {
@@ -84,7 +68,6 @@ function Home({navigation} : any) {
       .delete(`${url}/${id}`)
       .then(() => {
         fetchData(search);
-        setIdDelete("");
         Alert.alert("Xóa thành công", "Sinh viên đã được xóa");
       })
       .catch((error) => {
@@ -93,30 +76,41 @@ function Home({navigation} : any) {
       });
   };
 
+  const handle_navigate = () => {
+    navigation.navigate("Detail_Account");
+  };
+
   const startEditing = (student: Student) => {
     saveStudent(student);
   };
 
   const saveStudent = (sv: Student) => {
     axios
-        .put(`${url}/${sv.id}`, sv)
-        .then(() => {
-          fetchData(search);
-          setEditingStudent(null);
-          setEditName("");
-          setEditEmail("");
-          Alert.alert(
-            "Sửa thành công",
-            "Thông tin sinh viên đã được cập nhật."
-          );
-        })
-        .catch((error) => {
-          console.error("Sửa thất bại", error);
-          Alert.alert(
-            "Lỗi",
-            "Không thể cập nhật thông tin. Vui lòng thử lại sau."
-          );
-        });
+      .put(`${url}/${sv.id}`, sv)
+      .then(() => {
+        fetchData(search);
+        Alert.alert("Sửa thành công", "Thông tin sinh viên đã được cập nhật.");
+      })
+      .catch((error) => {
+        console.error("Sửa thất bại", error);
+        Alert.alert(
+          "Lỗi",
+          "Không thể cập nhật thông tin. Vui lòng thử lại sau."
+        );
+      });
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = dataSource.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(dataSource.length / itemsPerPage);
+
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
   };
 
   return (
@@ -128,8 +122,8 @@ function Home({navigation} : any) {
             value={search}
             onChangeText={(text) => setSearch(text)}
           ></TextInput>
-          {dataSource.map((item, index) => (
-            <Item_1 
+          {currentItems.map((item, index) => (
+            <Item_1
               student={item}
               onEdit={startEditing}
               onDelete={deleteStudent}
@@ -137,6 +131,19 @@ function Home({navigation} : any) {
               key={index}
             ></Item_1>
           ))}
+          <View style={styles.pagination}>
+            <Button
+              title="Previous Page"
+              onPress={prevPage}
+              disabled={currentPage === 1}
+            />
+            <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
+            <Button
+              title="Next Page"
+              onPress={nextPage}
+              disabled={currentPage === totalPages}
+            />
+          </View>
         </ScrollView>
       </View>
       <View style={styles.view2}>
@@ -173,6 +180,12 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   scroll2: {},
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 10,
+  },
 });
 
 export default Home;

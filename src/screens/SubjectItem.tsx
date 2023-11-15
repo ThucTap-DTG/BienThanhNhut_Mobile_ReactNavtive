@@ -4,8 +4,8 @@
   interface Subject {
     id: number;
     name: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
     quantity: string;
   }
 
@@ -80,7 +80,7 @@
                   onChangeText={(text) => setEditName(text)}
                   style={styles.input}
                 />
-                <TextInput
+                {/* <TextInput
                   value={editStartDate}
                   onChangeText={(text) => setEditStartDate(text)}
                   style={styles.input}
@@ -89,7 +89,7 @@
                   value={editEndDate}
                   onChangeText={(text) => setEditEndDate(text)}
                   style={styles.input}
-                />
+                /> */}
                 <TextInput
                   value={editQuantity}
                   onChangeText={(text) => setEditQuantity(text)}

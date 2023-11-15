@@ -15,6 +15,7 @@ import Splash from "./src/screens/Splash";
 import Login from "./src/screens/Login";
 import Edit from "./src/screens/Edit_Account";
 import Subject from "./src/screens/Detail_Subject"
+import test1 from "./src/screens/test1";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserProvider } from "./src/context/Usercontext";
 import { Alert } from "react-native";
@@ -149,13 +150,14 @@ function App() {
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="subject"
+          initialRouteName="Splash"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="subject" component={Subject} />
           <Stack.Screen name="Drawer" component={DrawerNavigator} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="test" component={test1} />
           <Stack.Screen
             name="Edit"
             component={Edit}

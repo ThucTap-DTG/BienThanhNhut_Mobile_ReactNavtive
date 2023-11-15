@@ -8,24 +8,59 @@ import {
   TextInput,
   Button,
   Alert,
+  Platform,
 } from "react-native";
 import SubjectItem from "./SubjectItem"; // Assuming you have a SubjectItem component
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 
 interface Subject {
   id: number;
   name: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   quantity: string;
 }
 
-const url = "https://65376c31bb226bb85dd33468.mockapi.io/api/subject"; // Replace with your API URL
+const url = "https://65376c31bb226bb85dd33468.mockapi.io/api/subject";
 
 function Home({ navigation }: any) {
   const [addName, setAddName] = useState<string>("");
-  const [addStartDate, setAddStartDate] = useState<string>("");
-  const [addEndDate, setAddEndDate] = useState<string>("");
   const [addQuantity, setAddQuantity] = useState<string>("");
+
+  // Date
+  const [addStartDate, setAddStartDate] = useState(new Date(2024,0,0));
+  const [addEndDate, setAddEndDate] = useState(new Date(2024,0,0));
+
+  const [showPicker, setShowPicker] = useState(false);
+  const [focusedInput, setFocusedInput] = useState("");
+
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    const currentDate = selectedDate || new Date();
+    setShowPicker(Platform.OS === "ios");
+
+    if (focusedInput === "input1") {
+      setAddStartDate(currentDate);
+    } else if (focusedInput === "input2") {
+      setAddEndDate(currentDate);
+    }
+  };
+
+  const showDatepicker = (input: string) => {
+    setFocusedInput(input);
+    setShowPicker(true);
+  };
+
+  const formatDate = (date: Date): string => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? "0" + day : day}/${
+      month < 10 ? "0" + month : month
+    }/${year}`;
+  };
+  //
 
   const [idDelete, setIdDelete] = useState<string>("");
 
@@ -74,8 +109,8 @@ function Home({ navigation }: any) {
       .then(() => {
         fetchData(search);
         setAddName("");
-        setAddStartDate("");
-        setAddEndDate("");
+        setAddStartDate(new Date()); //
+        setAddEndDate(new Date());
         setAddQuantity("");
         Alert.alert("Thêm thành công", "Môn học đã được thêm vào danh sách.");
       })
@@ -142,7 +177,6 @@ function Home({ navigation }: any) {
                 index={index}
                 key={index}
               ></SubjectItem>
-             
             ))}
         </ScrollView>
       </View>
@@ -156,14 +190,24 @@ function Home({ navigation }: any) {
           ></TextInput>
           <TextInput
             placeholder="Nhập ngày bắt đầu"
-            value={addStartDate}
-            onChangeText={(text) => setAddStartDate(text)}
+            value={formatDate(addStartDate)}
+            onPressIn={() => showDatepicker("input1")}
           ></TextInput>
           <TextInput
             placeholder="Nhập ngày kết thúc"
-            value={addEndDate}
-            onChangeText={(text) => setAddEndDate(text)}
+            value={formatDate(addEndDate)}
+            onPressIn={() => showDatepicker("input2")}
           ></TextInput>
+          {showPicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={focusedInput === "input1" ? addStartDate : addEndDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+            />
+          )}
           <TextInput
             placeholder="Nhập số lượng"
             value={addQuantity}
