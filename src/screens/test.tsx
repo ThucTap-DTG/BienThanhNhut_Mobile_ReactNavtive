@@ -10,7 +10,6 @@ const DateSelector = () => {
   };
 
   const handleButtonPress = () => {
-    // Handle button press with selectedDate value
     console.log('Selected Date:', selectedDate);
   };
 
@@ -36,7 +35,6 @@ const DateSelector = () => {
           dateInput: {
             marginLeft: 36,
           },
-          // ...other custom styles
         }}
         onDateChange={handleDateChange}
       />

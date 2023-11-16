@@ -16,7 +16,7 @@ interface Student {
   name: string;
   email: string;
 }
-
+// http://localhost:3001/students
 const url = "https://65376c31bb226bb85dd33468.mockapi.io/api/students";
 
 function Home({ navigation }: any) {
@@ -42,6 +42,19 @@ function Home({ navigation }: any) {
         console.error("Load dữ liệu thất bại", error);
       });
   };
+
+  // const fetchData = (text: string, limit: number, page: number) => {
+  //   const apiUrl = `http://localhost:3000/users?_limit=${limit}&_page=${page}&q=${text}`;
+
+  //   axios
+  //     .get<Student[]>(apiUrl)
+  //     .then((response) => {
+  //       setDataSource(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Load dữ liệu thất bại", error);
+  //     });
+  // };
 
   const addStudent = () => {
     const newStudent: Student = {
