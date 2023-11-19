@@ -15,7 +15,7 @@ import Splash from "./src/screens/Splash";
 import Login from "./src/screens/Login";
 import Edit from "./src/screens/Edit_Account";
 import Subject from "./src/screens/Detail_Subject"
-import test1 from "./src/screens/test1";
+import test1 from "./src/screens/test2";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserProvider } from "./src/context/Usercontext";
 import { Alert } from "react-native";
