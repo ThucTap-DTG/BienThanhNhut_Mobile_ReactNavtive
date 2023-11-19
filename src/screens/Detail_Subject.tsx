@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import {
   View,
@@ -9,8 +9,10 @@ import {
   Button,
   Alert,
   Platform,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
-import SubjectItem from "./SubjectItem"; // Assuming you have a SubjectItem component
+import SubjectItem from "./SubjectItem"; 
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -35,6 +37,23 @@ function Home({ navigation }: any) {
 
   const [showPicker, setShowPicker] = useState(false);
   const [focusedInput, setFocusedInput] = useState("");
+  // sua sua
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
+
+
+  //
+    const [idDelete, setIdDelete] = useState<string>("");
+
+    const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
+    const [editName, setEditName] = useState<string>("");
+    const [editStartDate, setEditStartDate] = useState<string>("");
+    const [editEndDate, setEditEndDate] = useState<string>("");
+    const [editQuantity, setEditQuantity] = useState<string>("");
+    const [dataSource, setDataSource] = useState<Subject[]>([]);
+    const [search, setSearch] = useState<string>("");
+  //
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || new Date();
@@ -60,23 +79,36 @@ function Home({ navigation }: any) {
       month < 10 ? "0" + month : month
     }/${year}`;
   };
-  //
+  //==============================================
+  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = dataSource.slice(0, indexOfLastItem);
+  const totalPages = Math.ceil(dataSource.length / itemsPerPage);
 
-  const [idDelete, setIdDelete] = useState<string>("");
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
 
-  const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
-  const [editName, setEditName] = useState<string>("");
-  const [editStartDate, setEditStartDate] = useState<string>("");
-  const [editEndDate, setEditEndDate] = useState<string>("");
-  const [editQuantity, setEditQuantity] = useState<string>("");
+   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+     const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+     const scrollContentSize = event.nativeEvent.contentSize.height;
+     const scrollOffset = event.nativeEvent.contentOffset.y;
 
-  const [dataSource, setDataSource] = useState<Subject[]>([]);
+     const scrollEnd = scrollContentSize - scrollViewHeight;
+     console.log(scrollOffset)
+     console.log("abc" + scrollEnd)
 
-  const [search, setSearch] = useState<string>("");
+     if (scrollOffset+ 0.1 >= scrollEnd) {
+         nextPage();
+     }
+   };
+
+
 
   useEffect(() => {
     fetchData(search);
-  }, [search]);
+  }, [search, currentPage, itemsPerPage]);
 
   const fetchData = (text: string) => {
     if (text !== "") {
@@ -162,14 +194,17 @@ function Home({ navigation }: any) {
   return (
     <View style={styles.container}>
       <View style={styles.view1}>
-        <ScrollView style={styles.scroll1}>
+        <ScrollView
+          ref={scrollViewRef}
+          onScroll={handleScroll}
+          scrollEventThrottle={400}
+        >
           <TextInput
             placeholder="Nhập tên tìm kiếm"
             value={search}
             onChangeText={(text) => setSearch(text)}
           ></TextInput>
-          {dataSource &&
-            dataSource.map((item, index) => (
+          {currentItems.map((item, index) => (
               <SubjectItem
                 subject={item}
                 onEdit={startEditing}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import {
   View,
@@ -8,6 +8,8 @@ import {
   TextInput,
   Button,
   Alert,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
 } from "react-native";
 import Item_1 from "./item";
 
@@ -19,7 +21,12 @@ interface Student {
 // http://localhost:3001/students
 const url = "https://65376c31bb226bb85dd33468.mockapi.io/api/students";
 
+interface Props {
+  enableSomeButton: () => void;
+}
+
 function Home({ navigation }: any) {
+  const scrollViewRef = useRef<ScrollView>(null);
   const [addName, setAddName] = useState<string>("");
   const [addEmail, setAddEmail] = useState<string>("");
 
@@ -115,21 +122,37 @@ function Home({ navigation }: any) {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dataSource.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = dataSource.slice(0, indexOfLastItem);
   const totalPages = Math.ceil(dataSource.length / itemsPerPage);
 
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
   };
 
-  const prevPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+    const scrollContentSize = event.nativeEvent.contentSize.height;
+    const scrollOffset = event.nativeEvent.contentOffset.y;
+
+    const scrollEnd = scrollContentSize - scrollViewHeight;
+
+    if (scrollOffset >= scrollEnd) {
+      if (currentPage === totalPages) {
+        Alert.alert("Không còn dữ liệu");
+      } else {
+        nextPage();
+      }
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.view1}>
-        <ScrollView style={styles.scroll1}>
+        <ScrollView
+          ref={scrollViewRef}
+          onScroll={handleScroll}
+          scrollEventThrottle={400}
+        >
           <TextInput
             placeholder="Nhập tên tìm kiếm"
             value={search}
@@ -144,19 +167,7 @@ function Home({ navigation }: any) {
               key={index}
             ></Item_1>
           ))}
-          <View style={styles.pagination}>
-            <Button
-              title="Previous Page"
-              onPress={prevPage}
-              disabled={currentPage === 1}
-            />
-            <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
-            <Button
-              title="Next Page"
-              onPress={nextPage}
-              disabled={currentPage === totalPages}
-            />
-          </View>
+          <View style={styles.pagination}></View>
         </ScrollView>
       </View>
       <View style={styles.view2}>
