@@ -4,6 +4,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 
+
 const formatDate = (date: Date): string => {
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -17,21 +18,21 @@ const MyDateTimePicker: React.FC = () => {
   const [date1, setDate1] = useState(new Date());
   const [date2, setDate2] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
-  const [focusedInput, setFocusedInput] = useState("");
+  const [focusedInput, setFocusedInput] = useState(""); // State to determine which TextInput is focused
 
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || new Date();
     setShowPicker(Platform.OS === "ios");
 
     if (focusedInput === "input1") {
-      setDate1(currentDate); 
+      setDate1(currentDate); // Update date for TextInput 1
     } else if (focusedInput === "input2") {
-      setDate2(currentDate);
+      setDate2(currentDate); // Update date for TextInput 2
     }
   };
 
   const showDatepicker = (input: string) => {
-    setFocusedInput(input);
+    setFocusedInput(input); // Store the focused TextInput
     setShowPicker(true);
   };
 
@@ -41,13 +42,15 @@ const MyDateTimePicker: React.FC = () => {
         value={formatDate(date1)}
         placeholder="Select Date 1"
         style={{ borderWidth: 1, padding: 10 }}
-        onPressIn={() => showDatepicker("input1")}
+        editable={false}
+        onFocus={() => showDatepicker("input1")}
       />
       <TextInput
         value={formatDate(date2)}
         placeholder="Select Date 2"
         style={{ borderWidth: 1, padding: 10 }}
-        onPressIn={() => showDatepicker("input2")}
+        editable={false}
+        onFocus={() => showDatepicker("input2")}
       />
       {showPicker && (
         <DateTimePicker
