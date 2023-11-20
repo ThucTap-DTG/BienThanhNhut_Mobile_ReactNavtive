@@ -6,6 +6,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { PaginationContext } from "../context/PaginationContext";
 
 type User = {
   username: string;
@@ -27,9 +28,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [page, setpage] = useState<Number>(5);
-  const [limit,setllimit] = useState<number>(5);
-
   useEffect(() => {
     const load = async () => {
       try {

@@ -18,7 +18,9 @@ import Subject from "./src/screens/Detail_Subject"
 import test1 from "./src/screens/test2";
 import Loadding from "./src/screens/Loading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+//
 import { UserProvider } from "./src/context/Usercontext";
+import { PaginationProvider } from "./src/context/PaginationContext";
 import { Alert } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -174,25 +176,27 @@ function NestedDrawer () {
 }
 function App() {
   return (
-    <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Splash"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Splash" component={Splash} />
-          <Stack.Screen name="subject" component={Subject} />
-          <Stack.Screen name="Drawer" component={DrawerNavigator} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="load" component={Loadding} />
-          <Stack.Screen
-            name="Edit"
-            component={Edit}
-            options={{ headerShown: true }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </UserProvider>
+    <PaginationProvider>
+      <UserProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Splash"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Splash" component={Splash} />
+            <Stack.Screen name="subject" component={Subject} />
+            <Stack.Screen name="Drawer" component={DrawerNavigator} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="load" component={Loadding} />
+            <Stack.Screen
+              name="Edit"
+              component={Edit}
+              options={{ headerShown: true }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserProvider>
+    </PaginationProvider>
   );
 }
 

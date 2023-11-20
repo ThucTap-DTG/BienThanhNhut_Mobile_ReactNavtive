@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
   View,
@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import Item_1 from "./item";
 import Loading from "./Loading";
+import { PaginationContext } from "../context/PaginationContext";
 
 interface Student {
   id: number;
@@ -33,8 +34,10 @@ function Home({ navigation }: any) {
 
   const [dataSource, setDataSource] = useState<Student[]>([]);
   const [search, setSearch] = useState<string>("");
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -122,13 +125,17 @@ function Home({ navigation }: any) {
       });
   };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const p = useContext(PaginationContext);
+
+  const indexOfLastItem = (p?.currentPage ?? 0) * (p?.itemsPerPage ?? 0);
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = dataSource.slice(0, indexOfLastItem);
   const totalPages = Math.ceil(dataSource.length / itemsPerPage);
+  
 
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
+    p?.setCurrentPage((p?.currentPage ?? 0)+ 1)
   };
 
 
