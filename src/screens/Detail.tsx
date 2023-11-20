@@ -12,6 +12,7 @@ import {
   NativeSyntheticEvent,
 } from "react-native";
 import Item_1 from "./item";
+import Loading from "./Loading";
 
 interface Student {
   id: number;
@@ -34,6 +35,7 @@ function Home({ navigation }: any) {
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData(search);
@@ -138,11 +140,11 @@ function Home({ navigation }: any) {
     const scrollEnd = scrollContentSize - scrollViewHeight;
 
     if (scrollOffset >= scrollEnd) {
-      if (currentPage === totalPages) {
-        Alert.alert("Không còn dữ liệu");
-      } else {
-        nextPage();
-      }
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+        nextPage()
+      }, 1000);
     }
   };
   return (
@@ -169,6 +171,7 @@ function Home({ navigation }: any) {
           ))}
           <View style={styles.pagination}></View>
         </ScrollView>
+        <Loading isLoading = {loading}/>
       </View>
       <View style={styles.view2}>
         <ScrollView style={styles.scroll2}>

@@ -16,6 +16,7 @@ import Login from "./src/screens/Login";
 import Edit from "./src/screens/Edit_Account";
 import Subject from "./src/screens/Detail_Subject"
 import test1 from "./src/screens/test2";
+import Loadding from "./src/screens/Loading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserProvider } from "./src/context/Usercontext";
 import { Alert } from "react-native";
@@ -104,7 +105,6 @@ function TabNavigator2() {
     </Tab.Navigator>
   );
 }
-//
 function DrawerNavigator(props: any) {
   const { navigation } = props;
   const handleLogout = async () => {
@@ -141,23 +141,50 @@ function DrawerNavigator(props: any) {
         component={TabNavigator2}
         options={{ title: "Thông tin tài khoản" }}
       />
+      <Drawer.Screen
+        name="Menu"
+        component={NestedDrawer}
+        options={{ title: "Danh mục" , headerShown: false}}
+      />
     </Drawer.Navigator>
   );
 }
 
+function NestedDrawer () {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => (
+        <DrawerContentScrollView {...props}>
+          <DrawerItemList {...props} />
+        </DrawerContentScrollView>
+      )}
+    >
+      <Drawer.Screen
+        name="subject"
+        component={Subject}
+        options={{ drawerLabel: "Danh mục môn học" }}
+      />
+      <Drawer.Screen
+        name="detail"
+        component={Detail}
+        options={{ drawerLabel: "Danh mục sinh viên" }}
+      />
+    </Drawer.Navigator>
+  );
+}
 function App() {
   return (
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="subject"
+          initialRouteName="Splash"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="subject" component={Subject} />
           <Stack.Screen name="Drawer" component={DrawerNavigator} />
           <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="test" component={test1} />
+          <Stack.Screen name="load" component={Loadding} />
           <Stack.Screen
             name="Edit"
             component={Edit}

@@ -16,6 +16,7 @@ import SubjectItem from "./SubjectItem";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
+import Loading from "./Loading";
 
 interface Subject {
   id: number;
@@ -54,6 +55,7 @@ function Home({ navigation }: any) {
     const [search, setSearch] = useState<string>("");
   //
   const scrollViewRef = useRef<ScrollView>(null);
+  const [loading, setLoading] = useState(false);
 
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || new Date();
@@ -100,7 +102,11 @@ function Home({ navigation }: any) {
      console.log("abc" + scrollEnd)
 
      if (scrollOffset+ 0.1 >= scrollEnd) {
-         nextPage();
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          nextPage();
+        }, 1000);
      }
    };
 
@@ -214,6 +220,7 @@ function Home({ navigation }: any) {
               ></SubjectItem>
             ))}
         </ScrollView>
+        <Loading isLoading = {loading}/>
       </View>
       <View style={styles.view2}>
         <ScrollView style={styles.scroll2}>
