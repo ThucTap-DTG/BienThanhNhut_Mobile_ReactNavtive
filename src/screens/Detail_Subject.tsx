@@ -17,6 +17,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import Loading from "./Loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Subject {
   id: number;
@@ -197,6 +198,16 @@ function Home({ navigation }: any) {
       });
   };
 
+  const clicksubject = (id: number) => {
+    console.log("id" + id)
+    navigation.navigate("student", { subjectId: id });
+  };
+
+  const clicksubject2 = (id: number) => {
+    console.log("id" + id);
+    navigation.navigate("student2", { subjectId: id });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.view1}>
@@ -211,16 +222,18 @@ function Home({ navigation }: any) {
             onChangeText={(text) => setSearch(text)}
           ></TextInput>
           {currentItems.map((item, index) => (
-              <SubjectItem
-                subject={item}
-                onEdit={startEditing}
-                onDelete={deleteSubject}
-                index={index}
-                key={index}
-              ></SubjectItem>
-            ))}
+            <SubjectItem
+              subject={item}
+              onEdit={startEditing}
+              onDelete={deleteSubject}
+              index={index}
+              key={index}
+              onPress={clicksubject}
+              onPress2={clicksubject2}
+            ></SubjectItem>
+          ))}
         </ScrollView>
-        <Loading isLoading = {loading}/>
+        <Loading isLoading={loading} />
       </View>
       <View style={styles.view2}>
         <ScrollView style={styles.scroll2}>

@@ -18,21 +18,21 @@ const MyDateTimePicker: React.FC = () => {
   const [date1, setDate1] = useState(new Date());
   const [date2, setDate2] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
-  const [focusedInput, setFocusedInput] = useState(""); // State to determine which TextInput is focused
+  const [focusedInput, setFocusedInput] = useState(""); 
 
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || new Date();
     setShowPicker(Platform.OS === "ios");
 
     if (focusedInput === "input1") {
-      setDate1(currentDate); // Update date for TextInput 1
+      setDate1(currentDate); 
     } else if (focusedInput === "input2") {
-      setDate2(currentDate); // Update date for TextInput 2
+      setDate2(currentDate); 
     }
   };
 
   const showDatepicker = (input: string) => {
-    setFocusedInput(input); // Store the focused TextInput
+    setFocusedInput(input); 
     setShowPicker(true);
   };
 

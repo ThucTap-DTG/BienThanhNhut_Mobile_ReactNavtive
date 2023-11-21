@@ -16,6 +16,8 @@ import Login from "./src/screens/Login";
 import Edit from "./src/screens/Edit_Account";
 import Subject from "./src/screens/Detail_Subject"
 import test1 from "./src/screens/test2";
+import student from "./src/screens/studentsubject"
+import student2 from "./src/screens/studentsubject2";
 import Loadding from "./src/screens/Loading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //
@@ -188,6 +190,16 @@ function App() {
             <Stack.Screen name="Drawer" component={DrawerNavigator} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="load" component={Loadding} />
+            <Stack.Screen
+              name="student"
+              component={student}
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name="student2"
+              component={student2}
+              options={{ headerShown: true }}
+            />
             <Stack.Screen
               name="Edit"
               component={Edit}
