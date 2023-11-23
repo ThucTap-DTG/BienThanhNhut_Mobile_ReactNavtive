@@ -9,6 +9,7 @@ import {
   Button,
   Alert,
 } from "react-native";
+import { Checkbox } from "react-native-paper";
 
 interface Student {
   id: number;
@@ -35,6 +36,10 @@ function Home({ navigation, route }: any) {
   const [studentsInSubject, setStudentsInSubject] = useState<number[]>([]);
   const [studentsToDisplay, setStudentsToDisplay] = useState<Student[]>([]);
 
+  const [checked, setChecked] = React.useState(false);
+
+
+
   
   const { subjectId } = route.params;
   const yourSubjectId = subjectId;
@@ -43,7 +48,7 @@ function Home({ navigation, route }: any) {
     const fetchData1 = async () => {
       try {
         const response = await fetch(
-          "https://df60cfc8570642678c963778bdafeb0f.api.mockbin.io/"
+          "https://65376c31bb226bb85dd33468.mockapi.io/api/studentsubject"
         );
         const data: StudentData[] = await response.json();
 

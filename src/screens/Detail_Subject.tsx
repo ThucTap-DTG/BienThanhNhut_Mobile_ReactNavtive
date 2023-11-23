@@ -27,7 +27,7 @@ interface Subject {
   quantity: string;
 }
 
-const url = "https://65376c31bb226bb85dd33468.mockapi.io/api/subject";
+const url = "https://9b74e059f986471fab3965a00832afcc.api.mockbin.io/";
 
 function Home({ navigation }: any) {
   const [addName, setAddName] = useState<string>("");
@@ -203,10 +203,15 @@ function Home({ navigation }: any) {
     navigation.navigate("student", { subjectId: id });
   };
 
-  const clicksubject2 = (id: number) => {
+  const clicksubject2 = (
+    id: number,
+    startDate: Date,
+    endDate: Date,
+    quantity: string
+  ) => {
     console.log("id" + id);
-    navigation.navigate("student2", { subjectId: id });
-  }
+    navigation.navigate("student2", { id_s: id, startDate_s: startDate, endDate_s: endDate, quantity_s: quantity  });
+  };
 
   return (
     <View style={styles.container}>

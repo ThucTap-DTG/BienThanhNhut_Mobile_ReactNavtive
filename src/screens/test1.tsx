@@ -32,7 +32,7 @@ const MyDateTimePicker: React.FC = () => {
   };
 
   const showDatepicker = (input: string) => {
-    setFocusedInput(input); 
+    setFocusedInput(input);   
     setShowPicker(true);
   };
 

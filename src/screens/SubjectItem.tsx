@@ -17,7 +17,7 @@ import { Checkbox } from "react-native-paper";
     onEdit: (subject: Subject) => void;
     onDelete: (id: number) => void;
     onPress: (id: number) => void;
-    onPress2: (id: number) => void;
+    onPress2: (id: number, startDate: Date, endDate: Date, quantity: string) => void;
   }
 
   const SubjectItem: React.FC<SubjectItemProps> = ({
@@ -135,7 +135,7 @@ import { Checkbox } from "react-native-paper";
                 )}
               </View>
               <View>
-                <Button title="List_student" onPress={() => onPress2(subject.id)}></Button>
+                <Button title="List_student" onPress={() => onPress2(subject.id, subject.startDate, subject.endDate, subject.quantity)}></Button>
               </View>
             </View>
           </View>
