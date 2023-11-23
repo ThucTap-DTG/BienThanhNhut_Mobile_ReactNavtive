@@ -90,7 +90,7 @@ function Home({ navigation, route }: any) {
 const addStudents = async (studentsToAdd: Student[]) => {
   try {
     const currentQuantity = await quantityStudent(yourSubjectId);
-    if (currentQuantity <= quantity_s) {
+    if (currentQuantity < quantity_s) {
       const addStudentsPromises = studentsToAdd.map((student) => {
         const newstu_sub: StudentData = {
           id: 0,
